@@ -1,5 +1,5 @@
 from tkinter import *
-
+from VISUALIZE import Visualise
 
 def max_num(head, sequence):
     for i in sequence:
@@ -14,6 +14,7 @@ def min_num(head, sequence):
 
 
 def SCAN(N, head, sequence):
+    Order=[]
     old_head = head
     seek_sequence = []
     seek_operations = 0
@@ -43,13 +44,14 @@ def SCAN(N, head, sequence):
             near_num = min_num(head, sequence)
     print("Seek Sequence : 	", end=" ")
     for i in seek_sequence:
+        Order.append(i)
         if i == min(seek_sequence):
             print(i)
         elif i == max(sequence):
             print(i, " ==> ", N - 1, " ==> ", end=" ")
         else:
             print(i, " ==> ", end=" ")
-    return seek_operations
+    return [Order, seek_operations]
 
 def fun():
     n = d.get()
@@ -58,9 +60,19 @@ def fun():
     n = int(n)
     ready_queue = [int(i) for i in num2.split()]
     ready_queue.sort()
-    seek_operations = SCAN(n, head, ready_queue)
+    data = SCAN(n, head, ready_queue)
+
+    global Order, seek_operations
+
+    Order = data[0]
+    seek_operations = data[1]
 
     print("Total number of seek operations : ", seek_operations)
+
+
+def fun2():
+
+    Visualise("SCAN", Order, seek_operations)
 
 
 if __name__ == '__main__':
@@ -75,5 +87,6 @@ if __name__ == '__main__':
     Label(root, text="Enter the disks in ready queue").grid(row= 2, column= 0)
     text2 = Entry(root, textvariable=c, bd = 5).grid(row= 2, column= 1)
     Button(root, text= "submit",bd=4,fg="Orange", command= fun).grid(row= 3, column= 0)
-    Button(root, text="Show Answer",bd= 4,fg="Green", command=root.quit).grid(row=3, column=1)
+    Button(root, text= "Visualize",bd=4,fg="Orange", command= fun2).grid(row= 3, column= 1)
+    Button(root, text="Show Answer",bd= 4,fg="Green", command=root.quit).grid(row=3, column=2)
     root.mainloop()
